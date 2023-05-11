@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>Configuración - Meetrans</title>
+    <link rel="stylesheet" href="configuracion.css"/>
+  </head>
+  <body>
+    <header>
+      <h1>Configuración - Meetrans</h1>
+      <h2>Administración</h2>
+      <button type="button" class="correcto jsGuardar">
+        Guardar
+      </button>
+      <button type="button" class="jsRestaurar">
+        Restaurar
+      </button>
+    </header>
+    <form>
+      <label>
+        <h2>Nombre</h2>
+        <input type="text" name="nombre" placeholder="Pepito"/>
+      </label>
+      <label>
+        <h2>Pronombre</h2>
+        <input type="text" name="pronombre" placeholder="Tú"/>
+      </label>
+      <h2>Atajos</h2>
+      <span>Opciones: Alt, Ctrl, Shift, Tecla [Obligatoria]</span>
+      <label>
+        <h3>Iniciar</h3>
+        <input
+          type="text"
+          name="atajosPorAccion.iniciar"
+          placeholder="Ctrl+Shift+Q"
+        />
+      </label>
+      <label>
+        <h3>Finalizar</h3>
+        <input
+          type="text"
+          name="atajosPorAccion.finalizar"
+          placeholder="Ctrl+Alt+Q"
+        />
+      </label>
+      <label>
+        <h2>Transparencia</h2>
+        <input
+          type="range"
+          name="transparencia"
+          min="0"
+          max="100"
+          step="1"
+          value="50"
+        />
+      </label>
+    </form>
+    <script src="configuracion.js"></script>
+  </body>
+</html>

@@ -1,0 +1,24 @@
+header {
+  background-color: lightgrey;
+  left: 0;
+  padding-bottom: 10px;
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+form {
+  margin-top: 140px;
+}
+
+button {
+  cursor: pointer;
+}
+
+.correcto {
+  background-color: lightgreen;
+}
+
+.incorrecto {
+  background-color: lightpink;
+}

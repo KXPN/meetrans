@@ -1,0 +1,19 @@
+{
+  "name": "Meetrans",
+  "description": "",
+  "version": "1.0",
+  "manifest_version": 3,
+  "permissions": ["storage"],
+  "options_page": "configuracion.html",
+  "content_scripts": [{
+    "js": ["meetrans.js"],
+    "matches": [
+      "https://meet.google.com/*"
+    ]
+  }],
+  "icons": {
+    "16": "icono_16.jpg",
+    "48": "icono_48.jpg",
+    "128": "icono_128.jpg"
+  }
+}
