@@ -230,13 +230,14 @@ class Meetrans {
     }
     this.ultimaHora = interaccionHora;
     const dPersonaNombre = dIntervencionImagen.nextElementSibling;
+    let ultimaPersonaNombre = dPersonaNombre.innerText.trim();
     if (this.nombre) {
-      this.ultimaPersonaNombre = (
-        dPersonaNombre
-        .innerText
+      ultimaPersonaNombre = (
+        ultimaPersonaNombre
         .replace(this.pronombre, this.nombre)
       );
     }
+    this.ultimaPersonaNombre = ultimaPersonaNombre;
     const dIntervencionFragmentos = (
       dPersonaNombre
       .nextElementSibling
