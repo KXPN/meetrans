@@ -4,9 +4,6 @@ class Meetrans {
   // Configuraciones
   // Tu nombre, para mostrar cuando hablas tú, es:
   nombre = '';
-  // Pronombre que aparece en tu cámara, para reemplazar por tu nombre. En
-  // español es: Tú
-  pronombre = 'Tú';
   // Atajos para iniciar o detener la transcripción
   // Opciones: Alt, Ctrl, Shift, Tecla [Obligatoria]
   // Ejemplo: Ctrl+Shift+Q
@@ -52,7 +49,6 @@ class Meetrans {
     console.log(opciones);
     if (opciones !== undefined) {
       this.nombre = (opciones.nombre || this.nombre);
-      this.pronombre = (opciones.pronombre || this.pronombre);
       this.atajosPorAccion.inicializar = (
         opciones.atajosPorAccion.inicializar ||
         this.atajosPorAccion.inicializar
@@ -235,7 +231,15 @@ class Meetrans {
     if (this.nombre) {
       ultimaPersonaNombre = (
         ultimaPersonaNombre
-        .replace(this.pronombre, this.nombre)
+        .replace(
+          (
+            document
+            .querySelector('[data-self-name]')
+            .dataset
+            .selfName
+          ),
+          this.nombre
+        )
       );
     }
     this.ultimaPersonaNombre = ultimaPersonaNombre;
