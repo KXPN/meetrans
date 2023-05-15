@@ -3,7 +3,7 @@ class Meetrans {
 
   // Configuraciones
   // Tu nombre, para mostrar cuando hablas tú, es:
-  nombre = 'Pepito';
+  nombre = '';
   // Pronombre que aparece en tu cámara, para reemplazar por tu nombre. En
   // español es: Tú
   pronombre = 'Tú';
@@ -230,11 +230,13 @@ class Meetrans {
     }
     this.ultimaHora = interaccionHora;
     const dPersonaNombre = dIntervencionImagen.nextElementSibling;
-    this.ultimaPersonaNombre = (
-      dPersonaNombre
-      .innerText
-      .replace(this.pronombre, this.nombre)
-    );
+    if (this.nombre) {
+      this.ultimaPersonaNombre = (
+        dPersonaNombre
+        .innerText
+        .replace(this.pronombre, this.nombre)
+      );
+    }
     const dIntervencionFragmentos = (
       dPersonaNombre
       .nextElementSibling
