@@ -182,9 +182,12 @@ class Meetrans {
   }
 
   capturar = () => {
+    this.cambiarSubtitulosBotonEstado(true);
+    if (!this.reunion.fechaYHora) {
+      return;
+    }
     this.dBotonCapturar.remove();
     window.addEventListener('beforeunload', this.descargarArchivo);
-    this.cambiarSubtitulosBotonEstado(true);
     this.reunion.fechaYHora = this.obtenerFechaYHoraActualSinPuntuacion();
     this.reunion.nombre = (
       (
