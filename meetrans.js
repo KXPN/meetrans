@@ -149,7 +149,6 @@ class Meetrans {
     this.cambiarSubtitulosBotonEstado(false);
   }
 
-
   cambiarSubtitulosBotonEstado = (debeEstarActivo) => {
     const dSubtitulosBoton = (
       document
@@ -214,7 +213,6 @@ class Meetrans {
     dImagenes.forEach(this.actualizarIntervenciones);
   }
 
-
   actualizarIntervenciones = (dIntervencionImagen) => {
     if (!dIntervencionImagen.offsetHeight) {
       return;
@@ -276,7 +274,6 @@ class Meetrans {
     return ('0' + numero).slice(-2);
   }
 
-
   guardarIntervencionFragmento = (dIntervencionFragmento) => {
     const fragmentoNuevo = dIntervencionFragmento.innerText;
     let fragmentoId = dIntervencionFragmento.id;
@@ -328,7 +325,16 @@ class Meetrans {
   }
 
 }
+
 if (typeof browser === 'undefined') {
   var browser = chrome;
 }
-browser.storage.sync.get('opciones', (xd) => new Meetrans(xd));
+if (browser.storage) {
+  browser.storage.sync.get('opciones', iniciarMeetrans);
+} else {
+  iniciarMeetrans({});
+}
+
+function iniciarMeetrans(opciones) {
+  window.meetrans = new Meetrans(opciones);
+}
