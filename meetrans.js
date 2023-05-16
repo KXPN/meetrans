@@ -37,7 +37,7 @@ class Meetrans {
   archivoDescargado = false;
   dBotonCapturar;
   subtitulosIntervalo;
-  notificacionesIntervalo;
+  mensajesIntervalo;
   intervencionesFragmentosPorHoraYPersona = {};
   reunion = {
     fechaYHora: '',
@@ -46,6 +46,8 @@ class Meetrans {
   ultimaHora = '';
   ultimaPersonaNombre = '';
   dUltimaIntervencion;
+  chatAbierto = false;
+  personaMensajeSufijo = ' (Chat)';
 
   constructor({ opciones }) {
     if (opciones !== undefined) {
@@ -206,7 +208,7 @@ class Meetrans {
     );
     dBotonColgar.addEventListener('click', this.descargarArchivo);
     this.subtitulosIntervalo = setInterval(this.actualizar);
-    this.notificacionesIntervalo = setInterval(this.capturarNotificaciones);
+    this.mensajesIntervalo = setInterval(this.capturarMensajes);
   }
 
   actualizar = () => {
@@ -287,7 +289,30 @@ class Meetrans {
     return ('0' + numero).slice(-2);
   }
 
-  capturarNotificaciones = () => {
+  marcarMensajesComoAgregados = () => {
+    (
+      document
+      .querySelectorAll('[data-message-text]')
+      .forEach((dMensaje) => {dMensaje.agregado = true})
+    );
+  }
+
+  capturarMensajes = () => {
+    if (document.querySelector('[data-panel-id="2"]').ariaPressed === 'true') {
+      if (!this.chatAbierto) {
+        this.marcarMensajesComoAgregados();
+        this.chatAbierto = true;
+      }
+
+      (
+        document
+        .querySelectorAll('[data-message-text]')
+        .forEach((dMensaje) => {this.guardarIntervencionMensaje(dMensaje)})
+      );
+      return;
+    }
+
+    this.chatAbierto = false;
     (
       document
       .querySelectorAll('[data-key^="notification-"]')
@@ -297,6 +322,20 @@ class Meetrans {
         }
       )
     );
+  }
+
+  guardarIntervencionMensaje = (dMensaje) => {
+    if (dMensaje.agregado) {
+      return;
+    }
+    dMensaje.agregado = true;
+    this.ultimaHora = this.obtenerHoraActualConDosPuntos();
+    this.dUltimaIntervencion = null;
+    this.ultimaPersonaNombre = (
+      dMensaje.parentElement.parentElement.dataset.senderName +
+      this.personaMensajeSufijo
+    );
+    this.guardarIntervencion(dMensaje.innerText);
   }
 
   guardarIntervencionNotificacion = (dNotificacion) => {
