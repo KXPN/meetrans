@@ -184,7 +184,7 @@ class Meetrans {
 
   capturar = () => {
     this.cambiarSubtitulosBotonEstado(true);
-    if (!this.reunion.fechaYHora) {
+    if (this.reunion.fechaYHora) {
       return;
     }
     this.dBotonCapturar.remove();
