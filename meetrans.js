@@ -45,7 +45,6 @@ class Meetrans {
   };
   ultimaHora = '';
   ultimaPersonaNombre = '';
-  dUltimaIntervencion;
   chatAbierto = false;
   personaMensajeSufijo = ' (Chat)';
 
@@ -224,8 +223,7 @@ class Meetrans {
       1 -
       (this.subtitulosTransparencia / 100)
     );
-    this.dUltimaIntervencion = dIntervencionImagen;
-    let interaccionHora = this.dUltimaIntervencion.hora;
+    let interaccionHora = dIntervencionImagen.hora;
     if (!interaccionHora) {
       interaccionHora = this.obtenerHoraActualConDosPuntos();
       dIntervencionImagen.hora = interaccionHora;
@@ -307,7 +305,7 @@ class Meetrans {
       (
         document
         .querySelectorAll('[data-message-text]')
-        .forEach((dMensaje) => {this.guardarIntervencionMensaje(dMensaje)})
+        .forEach(this.guardarIntervencionMensaje)
       );
       return;
     }
@@ -316,11 +314,7 @@ class Meetrans {
     (
       document
       .querySelectorAll('[data-key^="notification-"]')
-      .forEach(
-        (dNotificacion) => {
-          this.guardarIntervencionNotificacion(dNotificacion);
-        }
-      )
+      .forEach(this.guardarIntervencionNotificacion)
     );
   }
 
@@ -330,7 +324,6 @@ class Meetrans {
     }
     dMensaje.agregado = true;
     this.ultimaHora = this.obtenerHoraActualConDosPuntos();
-    this.dUltimaIntervencion = null;
     this.ultimaPersonaNombre = (
       dMensaje.parentElement.parentElement.dataset.senderName +
       this.personaMensajeSufijo
@@ -343,9 +336,7 @@ class Meetrans {
       return;
     }
     dNotificacion.agregada = true;
-
     this.ultimaHora = this.obtenerHoraActualConDosPuntos();
-    this.dUltimaIntervencion = null;
     const notificacion = dNotificacion.innerText.split('\n');
     this.ultimaPersonaNombre = (notificacion[1] + this.personaMensajeSufijo);
     this.guardarIntervencion(notificacion.splice(2).join('\n'));
