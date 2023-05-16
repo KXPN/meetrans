@@ -308,7 +308,7 @@ class Meetrans {
     this.ultimaHora = this.obtenerHoraActualConDosPuntos();
     this.dUltimaIntervencion = null;
     const notificacion = dNotificacion.innerText.split('\n');
-    this.ultimaPersonaNombre = notificacion[1];
+    this.ultimaPersonaNombre = (notificacion[1] + ' (Chat)');
     const fragmentoNuevo = notificacion.splice(2).join('\n');
     const fragmentoId = new Date().getTime();
     this.guardarIntervencion(fragmentoId, fragmentoNuevo);
