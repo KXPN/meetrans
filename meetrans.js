@@ -347,10 +347,8 @@ class Meetrans {
     this.ultimaHora = this.obtenerHoraActualConDosPuntos();
     this.dUltimaIntervencion = null;
     const notificacion = dNotificacion.innerText.split('\n');
-    this.ultimaPersonaNombre = (notificacion[1] + ' (Chat)');
-    const fragmentoNuevo = notificacion.splice(2).join('\n');
-    const fragmentoId = new Date().getTime();
-    this.guardarIntervencion(fragmentoId, fragmentoNuevo);
+    this.ultimaPersonaNombre = (notificacion[1] + this.personaMensajeSufijo);
+    this.guardarIntervencion(notificacion.splice(2).join('\n'));
   }
 
   guardarIntervencionFragmento = (dIntervencionFragmento) => {
@@ -361,10 +359,14 @@ class Meetrans {
       dIntervencionFragmento.id = fragmentoId;
     }
 
-    this.guardarIntervencion(fragmentoId, fragmentoNuevo);
+    this.guardarIntervencion(fragmentoNuevo, fragmentoId);
   }
 
-  guardarIntervencion = (fragmentoId, fragmentoNuevo) => {
+  guardarIntervencion = (fragmentoNuevo, fragmentoId = '') => {
+    if (!fragmentoId) {
+      fragmentoId = new Date().getTime();
+    }
+
     const horaYPersona = (this.ultimaHora + ' ' + this.ultimaPersonaNombre);
     if (!this.intervencionesFragmentosPorHoraYPersona[horaYPersona]) {
       this.intervencionesFragmentosPorHoraYPersona[horaYPersona] = {};
