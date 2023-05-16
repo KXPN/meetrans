@@ -36,7 +36,8 @@ class Meetrans {
   // De aquí para abajo no se debe configurar más
   archivoDescargado = false;
   dBotonCapturar;
-  intervalo;
+  subtitulosIntervalo;
+  notificacionesIntervalo;
   intervencionesFragmentosPorHoraYPersona = {};
   reunion = {
     fechaYHora: '',
@@ -44,9 +45,9 @@ class Meetrans {
   };
   ultimaHora = '';
   ultimaPersonaNombre = '';
+  dUltimaIntervencion;
 
   constructor({ opciones }) {
-    console.log(opciones);
     if (opciones !== undefined) {
       this.nombre = (opciones.nombre || this.nombre);
       this.atajosPorAccion.inicializar = (
@@ -204,7 +205,8 @@ class Meetrans {
       .parentElement
     );
     dBotonColgar.addEventListener('click', this.descargarArchivo);
-    this.intervalo = setInterval(this.actualizar);
+    this.subtitulosIntervalo = setInterval(this.actualizar);
+    this.notificacionesIntervalo = setInterval(this.capturarNotificaciones);
   }
 
   actualizar = () => {
@@ -220,7 +222,8 @@ class Meetrans {
       1 -
       (this.subtitulosTransparencia / 100)
     );
-    let interaccionHora = dIntervencionImagen.hora;
+    this.dUltimaIntervencion = dIntervencionImagen;
+    let interaccionHora = this.dUltimaIntervencion.hora;
     if (!interaccionHora) {
       interaccionHora = this.obtenerHoraActualConDosPuntos();
       dIntervencionImagen.hora = interaccionHora;
@@ -284,6 +287,33 @@ class Meetrans {
     return ('0' + numero).slice(-2);
   }
 
+  capturarNotificaciones = () => {
+    (
+      document
+      .querySelectorAll('[data-key^="notification-"]')
+      .forEach(
+        (dNotificacion) => {
+          this.guardarIntervencionNotificacion(dNotificacion);
+        }
+      )
+    );
+  }
+
+  guardarIntervencionNotificacion = (dNotificacion) => {
+    if (dNotificacion.agregada) {
+      return;
+    }
+    dNotificacion.agregada = true;
+
+    this.ultimaHora = this.obtenerHoraActualConDosPuntos();
+    this.dUltimaIntervencion = null;
+    const notificacion = dNotificacion.innerText.split('\n');
+    this.ultimaPersonaNombre = notificacion[1];
+    const fragmentoNuevo = notificacion.splice(2).join('\n');
+    const fragmentoId = new Date().getTime();
+    this.guardarIntervencion(fragmentoId, fragmentoNuevo);
+  }
+
   guardarIntervencionFragmento = (dIntervencionFragmento) => {
     const fragmentoNuevo = dIntervencionFragmento.innerText;
     let fragmentoId = dIntervencionFragmento.id;
@@ -291,6 +321,11 @@ class Meetrans {
       fragmentoId = new Date().getTime();
       dIntervencionFragmento.id = fragmentoId;
     }
+
+    this.guardarIntervencion(fragmentoId, fragmentoNuevo);
+  }
+
+  guardarIntervencion = (fragmentoId, fragmentoNuevo) => {
     const horaYPersona = (this.ultimaHora + ' ' + this.ultimaPersonaNombre);
     if (!this.intervencionesFragmentosPorHoraYPersona[horaYPersona]) {
       this.intervencionesFragmentosPorHoraYPersona[horaYPersona] = {};
