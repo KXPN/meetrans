@@ -219,16 +219,16 @@ class Meetrans {
       ''
     );
     const inicioMensaje = (
-      'Inicia la transcripción de la reunión' +
+      'En ' +
+      this.obtenerFechaActualSinPuntuacion()
+      ' ' +
+      'inicia la transcripción de la reunión' +
       (reunionNombre ? (' "' + reunionNombre + '"') : '') +
       ' ' +
       'con código ' +
       '"' + reunionCodigo + '" ' +
       'con ' +
       participantes.join(', ') +
-      ' ' +
-      'en la fecha ' +
-      this.obtenerFechaActualSinPuntuacion()
     );
     this.guardarSistemaIntervencion(inicioMensaje);
     this.reunion.nombre = reunionNombre;
