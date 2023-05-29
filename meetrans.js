@@ -447,8 +447,11 @@ class Meetrans {
     dDescargaEnlace.href = window.URL.createObjectURL(archivoObjeto);
     dDescargaEnlace.download = (
       this.reunion.fechaYHora +
-      ' ' +
-      this.reunion.nombre
+      (
+        this.reunion.nombre ?
+        (' ' + this.reunion.nombre) :
+        ''
+      )
     );
     dDescargaEnlace.click();
     this.archivoDescargado = true;
