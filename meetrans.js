@@ -191,6 +191,27 @@ class Meetrans {
     this.dBotonCapturar.remove();
     window.addEventListener('beforeunload', this.descargarArchivo);
     this.reunion.fechaYHora = this.obtenerFechaYHoraActualSinPuntuacion();
+    const horaYPersona = (
+      this.obtenerHoraActualConDosPuntos() +
+      ' ' +
+      'Sistema'
+    );
+    let participantes = [];
+    (
+      document
+      .querySelectorAll('[data-self-name]')
+      .forEach(
+        (dParticipanteNombre) => {
+          const participanteNombre = dParticipanteNombre.innerText.trim();
+          participantes.push(this.reemplazarPronombre(participanteNombre));
+        },
+      )
+    );
+    const inicioMensaje = (
+      'Inicia la transcripción con ' +
+      participantes.join(', ')
+    );
+    this.guardarRegistro(horaYPersona, inicioMensaje);
     this.reunion.nombre = (
       (
         document
@@ -234,20 +255,7 @@ class Meetrans {
       return;
     }
     let ultimaPersonaNombre = dPersonaNombre.innerText.trim();
-    if (this.nombre) {
-      ultimaPersonaNombre = (
-        ultimaPersonaNombre
-        .replace(
-          (
-            document
-            .querySelector('[data-self-name]')
-            .dataset
-            .selfName
-          ),
-          this.nombre
-        )
-      );
-    }
+    ultimaPersonaNombre = this.reemplazarPronombre(ultimaPersonaNombre);
     this.ultimaPersonaNombre = ultimaPersonaNombre;
     const dIntervencionFragmentos = (
       dPersonaNombre
@@ -255,6 +263,24 @@ class Meetrans {
       .querySelectorAll('span')
     );
     dIntervencionFragmentos.forEach(this.guardarIntervencionFragmento);
+  }
+
+  reemplazarPronombre = (texto) => {
+    if (!this.nombre) {
+      return texto;
+    }
+    return (
+      texto
+      .replace(
+        (
+          document
+          .querySelector('[data-self-name]')
+          .dataset
+          .selfName
+        ),
+        this.nombre,
+      )
+    );
   }
 
   obtenerFechaYHoraActualSinPuntuacion = () => {
@@ -354,11 +380,14 @@ class Meetrans {
   }
 
   guardarIntervencion = (fragmentoNuevo, fragmentoId = '') => {
+    const horaYPersona = (this.ultimaHora + ' ' + this.ultimaPersonaNombre);
+    this.guardarRegistro(horaYPersona, fragmentoNuevo, fragmentoId);
+  }
+
+  guardarRegistro = (horaYPersona, fragmentoNuevo, fragmentoId = '') => {
     if (!fragmentoId) {
       fragmentoId = new Date().getTime();
     }
-
-    const horaYPersona = (this.ultimaHora + ' ' + this.ultimaPersonaNombre);
     if (!this.intervencionesFragmentosPorHoraYPersona[horaYPersona]) {
       this.intervencionesFragmentosPorHoraYPersona[horaYPersona] = {};
     }
