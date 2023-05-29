@@ -218,13 +218,6 @@ class Meetrans {
       ) ||
       ''
     );
-    const horaYPersona = (
-      this.obtenerFechaActualSinPuntuacion() +
-      ' ' +
-      this.obtenerHoraActualConDosPuntos() +
-      ' ' +
-      'Sistema'
-    );
     const inicioMensaje = (
       'Inicia la transcripción de la reunión' +
       (reunionNombre ? (' "' + reunionNombre + '"') : '') +
@@ -232,9 +225,12 @@ class Meetrans {
       'con código ' +
       '"' + reunionCodigo + '" ' +
       'con ' +
-      participantes.join(', ')
+      participantes.join(', ') +
+      ' ' +
+      'en la fecha ' +
+      this.obtenerFechaActualSinPuntuacion()
     );
-    this.guardarRegistro(horaYPersona, inicioMensaje);
+    this.guardarSistemaIntervencion(inicioMensaje);
     this.reunion.nombre = reunionNombre;
     const dBotonColgar = (
       this
@@ -373,14 +369,25 @@ class Meetrans {
   }
 
   guardarIntervencionNotificacion = (dNotificacion) => {
+    console.log(dNotificacion.innerText);
     if (dNotificacion.agregada) {
       return;
     }
     dNotificacion.agregada = true;
-    this.ultimaHora = this.obtenerHoraActualConDosPuntos();
-    const notificacion = dNotificacion.innerText.split('\n');
-    this.ultimaPersonaNombre = (notificacion[1] + this.personaMensajeSufijo);
-    this.guardarIntervencion(notificacion.splice(2).join('\n'));
+    const notificacionPartes = dNotificacion.innerText.split('\n');
+    const notificacionTipo = notificacionPartes[0];
+    if (notificacionTipo === 'domain_disabled') {
+      return;
+    }
+    if (notificacionTipo !== 'chat') {
+      this.guardarSistemaIntervencion(notificacionPartes[0]);
+      return;
+    }
+    this.ultimaPersonaNombre = (
+      notificacionPartes[1] +
+      this.personaMensajeSufijo
+    );
+    this.guardarIntervencion(notificacionPartes.splice(2).join('\n'));
   }
 
   guardarIntervencionFragmento = (dIntervencionFragmento) => {
@@ -396,10 +403,6 @@ class Meetrans {
 
   guardarIntervencion = (fragmentoNuevo, fragmentoId = '') => {
     const horaYPersona = (this.ultimaHora + ' ' + this.ultimaPersonaNombre);
-    this.guardarRegistro(horaYPersona, fragmentoNuevo, fragmentoId);
-  }
-
-  guardarRegistro = (horaYPersona, fragmentoNuevo, fragmentoId = '') => {
     if (!fragmentoId) {
       fragmentoId = new Date().getTime();
     }
@@ -409,6 +412,12 @@ class Meetrans {
     this.intervencionesFragmentosPorHoraYPersona[horaYPersona][fragmentoId] = (
       fragmentoNuevo
     );
+  }
+
+  guardarSistemaIntervencion = (fragmentoNuevo) => {
+    this.ultimaHora = this.obtenerHoraActualConDosPuntos();
+    this.ultimaPersonaNombre = 'Sistema';
+    this.guardarIntervencion(fragmentoNuevo);
   }
 
   descargarArchivo = () => {
