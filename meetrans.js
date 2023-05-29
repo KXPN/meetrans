@@ -191,11 +191,6 @@ class Meetrans {
     this.dBotonCapturar.remove();
     window.addEventListener('beforeunload', this.descargarArchivo);
     this.reunion.fechaYHora = this.obtenerFechaYHoraActualSinPuntuacion();
-    const horaYPersona = (
-      this.obtenerHoraActualConDosPuntos() +
-      ' ' +
-      'Sistema'
-    );
     let participantes = [];
     (
       document
@@ -207,12 +202,14 @@ class Meetrans {
         },
       )
     );
-    const inicioMensaje = (
-      'Inicia la transcripción con ' +
-      participantes.join(', ')
+    const reunionCodigo = (
+      document
+      .location
+      .pathname
+      .match(/[a-z]{3}-[a-z]{4}-[a-z]{3}/)
+      [0]
     );
-    this.guardarRegistro(horaYPersona, inicioMensaje);
-    this.reunion.nombre = (
+    const reunionNombre = (
       (
         document
         .querySelector(this.selectores.reunionNombre)
@@ -221,6 +218,24 @@ class Meetrans {
       ) ||
       ''
     );
+    const horaYPersona = (
+      this.obtenerFechaActualSinPuntuacion() +
+      ' ' +
+      this.obtenerHoraActualConDosPuntos() +
+      ' ' +
+      'Sistema'
+    );
+    const inicioMensaje = (
+      'Inicia la transcripción de la reunión' +
+      (reunionNombre ? (' "' + reunionNombre + '"') : '') +
+      ' ' +
+      'con código ' +
+      '"' + reunionCodigo + '" ' +
+      'con ' +
+      participantes.join(', ')
+    );
+    this.guardarRegistro(horaYPersona, inicioMensaje);
+    this.reunion.nombre = reunionNombre;
     const dBotonColgar = (
       this
       .ejecutarXPath(this.selectores.xpath.reunionBotonFinalizarIcono)
