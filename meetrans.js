@@ -220,7 +220,7 @@ class Meetrans {
     );
     const inicioMensaje = (
       'En ' +
-      this.obtenerFechaActualSinPuntuacion()
+      this.obtenerFechaActualSinPuntuacion() +
       ' ' +
       'inicia la transcripción de la reunión' +
       (reunionNombre ? (' "' + reunionNombre + '"') : '') +
@@ -228,7 +228,7 @@ class Meetrans {
       'con código ' +
       '"' + reunionCodigo + '" ' +
       'con ' +
-      participantes.join(', ') +
+      participantes.join(', ')
     );
     this.guardarSistemaIntervencion(inicioMensaje);
     this.reunion.nombre = reunionNombre;
@@ -369,7 +369,6 @@ class Meetrans {
   }
 
   guardarIntervencionNotificacion = (dNotificacion) => {
-    console.log(dNotificacion.innerText);
     if (dNotificacion.agregada) {
       return;
     }
