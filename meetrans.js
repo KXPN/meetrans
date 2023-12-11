@@ -14,6 +14,8 @@ class Meetrans {
   // Transparencia de los subtítulos, debe ser un número natural en el rango
   // [0, 100]
   subtitulosTransparencia = 50;
+  // Códigos de reuniones que se deben ignorar, separados por coma
+  reunionesCodigosAIgnorar = '';
 
   // Estos valores tal vez se deben cambiar si Google cambia la interfaz
   botonActivoColor = 'rgb(138, 180, 248)';
@@ -40,6 +42,7 @@ class Meetrans {
   mensajesIntervalo;
   intervencionesFragmentosPorHoraYPersona = {};
   reunion = {
+    codigo: '',
     fechaYHora: '',
     nombre: '',
   };
@@ -63,7 +66,22 @@ class Meetrans {
         opciones.subtitulosTransparencia ||
         this.subtitulosTransparencia
       );
+      this.reunionesCodigosAIgnorar = (
+        opciones.reunionesCodigosAIgnorar ||
+        this.reunionesCodigosAIgnorar
+      );
     }
+    const reunionCodigo = (
+      document
+      .location
+      .pathname
+      .match(/[a-z]{3}-[a-z]{4}-[a-z]{3}/)
+      [0]
+    );
+    if (this.reunionesCodigosAIgnorar.split(',').includes(reunionCodigo)) {
+      return;
+    }
+    this.reunion.codigo = reunionCodigo;
     this.inicializar();
   }
 
@@ -202,13 +220,6 @@ class Meetrans {
         },
       )
     );
-    const reunionCodigo = (
-      document
-      .location
-      .pathname
-      .match(/[a-z]{3}-[a-z]{4}-[a-z]{3}/)
-      [0]
-    );
     const reunionNombre = (
       (
         document
@@ -226,7 +237,7 @@ class Meetrans {
       (reunionNombre ? (' "' + reunionNombre + '"') : '') +
       ' ' +
       'con código ' +
-      '"' + reunionCodigo + '" ' +
+      '"' + this.reunion.codigo + '" ' +
       'con ' +
       participantes.join(', ')
     );

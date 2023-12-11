@@ -48,7 +48,7 @@ const Configuracion = {
   },
   inicializar: function() {
     window.onbeforeunload = this.revisarSiHayCambios.bind(this);
-    document.querySelectorAll('input').forEach((dOpcion) => {
+    document.querySelectorAll('input,textarea').forEach((dOpcion) => {
       dOpcion.addEventListener('input', this.revisarSiHayCambios.bind(this));
     });
     document.querySelector('.jsGuardar').addEventListener(
