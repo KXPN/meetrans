@@ -145,11 +145,17 @@ class Meetrans {
         continue;
       }
       teclasPresionadasPorTecla[tecla] = true;
-      (
-        atajoTeclas
-        .forEach((tecla) => {delete teclasPresionadasPorTecla[tecla];})
-      );
-      if (Object.keys(teclasPresionadasPorTecla).length) {
+      let atajoTeclasFueronPresionadas = true;
+      for (let atajoTecla of atajoTeclas) {
+        if (!teclasPresionadasPorTecla[atajoTecla]) {
+          atajoTeclasFueronPresionadas = false;
+          break;
+        }
+      }
+      if (
+        !atajoTeclasFueronPresionadas ||
+        (atajoTeclas.length !== Object.keys(teclasPresionadasPorTecla).length)
+      ) {
         continue;
       }
       if (accion === 'iniciar') {
