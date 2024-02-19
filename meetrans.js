@@ -287,6 +287,7 @@ class Meetrans {
     this.ultimaPersonaNombre = ultimaPersonaNombre;
     const dIntervencionFragmentos = (
       dPersonaNombre
+      .parentElement
       .nextElementSibling
       .querySelectorAll('span')
     );
