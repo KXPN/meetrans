@@ -24,7 +24,8 @@ class Meetrans {
       'img[src^="https://"][data-iml][alt=""]:not([jsname]):not([jscontroller])'
     ),
     reunionNombre: '[data-meeting-title]',
-    subtitulosBotonIcono: 'span.material-icons-extended',
+    subtituloEstaPrendido: 'span.material-icons-extended',
+    subtituloEstaPrendidoIcono: '.material-icons-extended .google-symbols',
     xpath: {
       reunionBotonFinalizarIcono: '//i[text()="call_end"]',
       reunionNombre: (
@@ -87,8 +88,7 @@ class Meetrans {
 
   inicializar = () => {
     const dSubtitulosBoton = (
-      document
-      .querySelector(this.selectores.subtitulosBotonIcono)
+      document.querySelector(this.selectores.subtituloEstaPrendido)
     );
     if (!dSubtitulosBoton) {
       setTimeout(this.inicializar);
@@ -172,11 +172,16 @@ class Meetrans {
   }
 
   cambiarSubtitulosBotonEstado = (debeEstarActivo) => {
-    const dSubtitulosBoton = (
-      document
-      .querySelector(this.selectores.subtitulosBotonIcono)
-      .parentElement
+    let dSubtituloEstaPrendido = (
+      document.querySelector(this.selectores.subtituloEstaPrendidoIcono)
     );
+    let dSubtitulosBoton = dSubtituloEstaPrendido?.parentElement?.parentElement;
+    if (!dSubtitulosBoton) {
+      const dSubtituloEstaPrendidoIcono = (
+        document.querySelector(this.selectores.subtituloEstaPrendido)
+      );
+      dSubtitulosBoton = dSubtituloEstaPrendidoIcono.parentElement;
+    }
     const subtitulosBotonFondoColor = (
       getComputedStyle(dSubtitulosBoton)
       .backgroundColor
