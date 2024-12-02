@@ -4,6 +4,8 @@ class Meetrans {
   // Configuraciones
   // Tu nombre, para mostrar cuando hablas tú, es:
   nombre = '';
+  // Sufijo del archivo generado
+  sufijo = '';
   // Atajos para iniciar o detener la transcripción
   // Opciones: Alt, Ctrl, Shift, Tecla [Obligatoria]
   // Ejemplo: Ctrl+Shift+Q
@@ -55,6 +57,7 @@ class Meetrans {
   constructor({ opciones }) {
     if (opciones !== undefined) {
       this.nombre = (opciones.nombre || this.nombre);
+      this.sufijo = (opciones.sufijo || this.sufijo);
       this.atajosPorAccion.inicializar = (
         opciones.atajosPorAccion.inicializar ||
         this.atajosPorAccion.inicializar
@@ -474,6 +477,7 @@ class Meetrans {
         (' ' + this.reunion.nombre) :
         ''
       ) +
+      this.sufijo +
       '.txt'
     );
     dDescargaEnlace.click();
