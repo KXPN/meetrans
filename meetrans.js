@@ -473,7 +473,8 @@ class Meetrans {
         this.reunion.nombre ?
         (' ' + this.reunion.nombre) :
         ''
-      )
+      ) +
+      '.txt'
     );
     dDescargaEnlace.click();
     this.archivoDescargado = true;
