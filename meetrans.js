@@ -23,7 +23,7 @@ class Meetrans {
   botonActivoColor = 'rgb(138, 180, 248)';
   selectores = {
     imagenes: (
-      'img[src^="https://"][data-iml][alt=""]:not([jsname]):not([jscontroller])'
+      'img[src^="https://"][data-iml][alt=""]:not([jsname]):not([jscontroller]):not([aria-hidden])'
     ),
     reunionNombre: '[data-meeting-title]',
     subtituloEstaPrendido: 'span.material-icons-extended',
