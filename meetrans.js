@@ -3,7 +3,7 @@ class Meetrans {
 
   // Configuraciones
   // Tu nombre, para mostrar cuando hablas tú, es:
-  nombre = '';
+  nombre = 'Pepito';
   // Sufijo del archivo generado
   sufijo = '';
   // Atajos para iniciar o detener la transcripción
@@ -25,6 +25,10 @@ class Meetrans {
     imagenes: (
       'img[src^="https://"][data-iml][alt=""]:not([jsname]):not([jscontroller]):not([aria-hidden])'
     ),
+    listaParticipante: (
+      '[data-panel-container-id=sidePanel1] [data-participant-id]'
+    ),
+    participantesListaIcono: '[data-panel-id][data-promo-anchor-id] i',
     reunionNombre: '[data-meeting-title]',
     subtituloEstaPrendido: 'span.material-icons-extended',
     subtituloEstaPrendidoIcono: '.material-icons-extended .google-symbols',
@@ -44,6 +48,7 @@ class Meetrans {
   subtitulosIntervalo;
   mensajesIntervalo;
   intervencionesFragmentosPorHoraYPersona = {};
+  participantesNombres = [];
   reunion = {
     codigo: '',
     fechaYHora: '',
@@ -94,9 +99,18 @@ class Meetrans {
       document.querySelector(this.selectores.subtituloEstaPrendido)
     );
     if (!dSubtitulosBoton) {
-      setTimeout(this.inicializar);
+      setTimeout(this.inicializar.bind(this));
       return;
     }
+    const dParticipantesListaIcono = (
+      document.querySelector(this.selectores.participantesListaIcono)
+    );
+    if (!dParticipantesListaIcono) {
+      setTimeout(this.inicializar.bind(this));
+      return;
+    }
+    dParticipantesListaIcono.click();
+    dParticipantesListaIcono.click();
     this.insertarBotonInicio();
   }
 
@@ -223,17 +237,10 @@ class Meetrans {
     this.dBotonCapturar.remove();
     window.addEventListener('beforeunload', this.descargarArchivo);
     this.reunion.fechaYHora = this.obtenerFechaYHoraActualSinPuntuacion();
-    let participantes = [];
-    (
-      document
-      .querySelectorAll('[data-self-name]')
-      .forEach(
-        (dParticipanteNombre) => {
-          const participanteNombre = dParticipanteNombre.innerText.trim();
-          participantes.push(this.reemplazarPronombre(participanteNombre));
-        },
-      )
+    const dListaParticipantes = (
+      document.querySelectorAll(this.selectores.listaParticipante)
     );
+    dListaParticipantes.forEach(this.agregarParticipante);
     const reunionNombre = (
       (
         document
@@ -253,7 +260,7 @@ class Meetrans {
       'con código ' +
       '"' + this.reunion.codigo + '" ' +
       'con ' +
-      participantes.join(', ')
+      this.participantesNombres.join(', ')
     );
     this.guardarSistemaIntervencion(inicioMensaje);
     this.reunion.nombre = reunionNombre;
@@ -302,18 +309,20 @@ class Meetrans {
     dIntervencionFragmentos.forEach(this.guardarIntervencionFragmento);
   }
 
-  reemplazarPronombre = (texto) => {
+  reemplazarPronombre = (personaNombre) => {
     if (!this.nombre) {
-      return texto;
+      return personaNombre;
     }
     return (
-      texto
+      personaNombre
       .replace(
         (
           document
-          .querySelector('[data-self-name]')
-          .dataset
-          .selfName
+          .querySelector(this.selectores.listaParticipante)
+          .innerText
+          .split(/\n/)
+          [1]
+          .replaceAll(/\(|\)/g,'')
         ),
         this.nombre,
       )
@@ -443,6 +452,11 @@ class Meetrans {
     this.ultimaHora = this.obtenerHoraActualConDosPuntos();
     this.ultimaPersonaNombre = 'Sistema';
     this.guardarIntervencion(fragmentoNuevo);
+  }
+
+  agregarParticipante = (dListaParticipante) => {
+    const nombre = dListaParticipante.querySelector('span').textContent.trim();
+    this.participantesNombres.push(nombre);
   }
 
   descargarArchivo = () => {
