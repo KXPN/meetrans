@@ -63,9 +63,9 @@ class Meetrans {
     if (opciones !== undefined) {
       this.nombre = (opciones.nombre || this.nombre);
       this.sufijo = (opciones.sufijo || this.sufijo);
-      this.atajosPorAccion.inicializar = (
-        opciones.atajosPorAccion.inicializar ||
-        this.atajosPorAccion.inicializar
+      this.atajosPorAccion.iniciar = (
+        opciones.atajosPorAccion.iniciar ||
+        this.atajosPorAccion.iniciar
       );
       this.atajosPorAccion.finalizar = (
         opciones.atajosPorAccion.finalizar ||
