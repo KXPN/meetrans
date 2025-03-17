@@ -270,8 +270,8 @@ class Meetrans {
       .parentElement
     );
     dBotonColgar.addEventListener('click', this.descargarArchivo);
-    this.subtitulosIntervalo = setInterval(this.actualizar);
-    this.mensajesIntervalo = setInterval(this.capturarMensajes);
+    this.subtitulosIntervalo = setInterval(this.actualizar, 10000);
+    this.mensajesIntervalo = setInterval(this.capturarMensajes, 10000);
   }
 
   actualizar = () => {
@@ -303,8 +303,8 @@ class Meetrans {
     const dIntervencionFragmentos = (
       dPersonaNombre
       .parentElement
-      .nextElementSibling
-      .querySelectorAll('span')
+      .parentElement
+      .querySelectorAll('div:not(:has(div),:has(span))')
     );
     dIntervencionFragmentos.forEach(this.guardarIntervencionFragmento);
   }
