@@ -270,8 +270,8 @@ class Meetrans {
       .parentElement
     );
     dBotonColgar.addEventListener('click', this.descargarArchivo);
-    this.subtitulosIntervalo = setInterval(this.actualizar, 10000);
-    this.mensajesIntervalo = setInterval(this.capturarMensajes, 10000);
+    this.subtitulosIntervalo = setInterval(this.actualizar);
+    this.mensajesIntervalo = setInterval(this.capturarMensajes);
   }
 
   actualizar = () => {
