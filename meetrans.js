@@ -3,7 +3,7 @@ class Meetrans {
 
   // Configuraciones
   // Tu nombre, para mostrar cuando hablas tú, es:
-  nombre = '';
+  nombre = 'Piyin';
   // Sufijo del archivo generado
   sufijo = '';
   // Atajos para iniciar o detener la transcripción
@@ -27,6 +27,9 @@ class Meetrans {
     ),
     listaParticipante: (
       '[data-panel-container-id=sidePanel1] [data-participant-id]'
+    ),
+    listaParticipanteNombre: (
+      '[data-panel-container-id=sidePanel1] [data-participant-id] span'
     ),
     participantesListaIcono: '[data-panel-id][data-promo-anchor-id] i',
     reunionNombre: '[data-meeting-title]',
@@ -318,11 +321,8 @@ class Meetrans {
       .replace(
         (
           document
-          .querySelector(this.selectores.listaParticipante)
+          .querySelector(this.selectores.listaParticipanteNombre)
           .innerText
-          .split(/\n/)
-          [1]
-          .replaceAll(/\(|\)/g,'')
         ),
         this.nombre,
       )
