@@ -3,7 +3,7 @@ class Meetrans {
 
   // Configuraciones
   // Tu nombre, para mostrar cuando hablas tú, es:
-  nombre = 'Piyin';
+  nombre = '';
   // Sufijo del archivo generado
   sufijo = '';
   // Atajos para iniciar o detener la transcripción
