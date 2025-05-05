@@ -33,8 +33,12 @@ class Meetrans {
     ),
     participantesListaIcono: '[data-panel-id][data-promo-anchor-id] i',
     reunionNombre: '[data-meeting-title]',
-    subtituloEstaPrendido: 'span.material-icons-extended',
-    subtituloEstaPrendidoIcono: '.material-icons-extended .google-symbols',
+    subtituloEstaPrendido: (
+      '[role=button][data-tooltip-id][data-idom-class]:not([aria-expanded]):not([data-emoji]):not([data-promo-anchor-id]):not([disabled]) span[aria-hidden]'
+    ),
+    subtituloEstaPrendidoIcono: (
+      '[role=button][data-tooltip-id][data-idom-class]:not([aria-expanded]):not([data-emoji]):not([data-promo-anchor-id]):not([disabled]) span[aria-hidden] i'
+    ),
     xpath: {
       reunionBotonFinalizarIcono: '//i[text()="call_end"]',
       reunionNombre: (
