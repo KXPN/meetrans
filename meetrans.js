@@ -23,7 +23,7 @@ class Meetrans {
   botonActivoColor = 'rgb(138, 180, 248)';
   selectores = {
     imagenes: (
-      'img[src^="https://"][data-iml][alt=""]:not([jsname]):not([jscontroller]):not([aria-hidden])'
+      '[data-priority][data-side] [tabindex][role=region] img[src^="https://"][data-iml][alt=""]:not([jsname],[jscontroller],[aria-hidden])'
     ),
     listaParticipante: (
       '[data-panel-container-id=sidePanel1] [data-participant-id]'
@@ -34,10 +34,10 @@ class Meetrans {
     participantesListaIcono: '[data-panel-id][data-promo-anchor-id] i',
     reunionNombre: '[data-meeting-title]',
     subtituloEstaPrendido: (
-      '[role=button][data-tooltip-id][data-idom-class]:not([aria-expanded]):not([data-emoji]):not([data-promo-anchor-id]):not([disabled]) span[aria-hidden]'
+      '[data-is-auto-rejoin] [role=region] [role=button][data-tooltip-id][data-idom-class]:not([aria-expanded],[data-emoji],[data-promo-anchor-id],[disabled]) span[aria-hidden]'
     ),
     subtituloEstaPrendidoIcono: (
-      '[role=button][data-tooltip-id][data-idom-class]:not([aria-expanded]):not([data-emoji]):not([data-promo-anchor-id]):not([disabled]) span[aria-hidden] i'
+      '[data-is-auto-rejoin] [role=region] [role=button][data-tooltip-id][data-idom-class]:not([aria-expanded],[data-emoji],[data-promo-anchor-id],[disabled]) span[aria-hidden] i'
     ),
     xpath: {
       reunionBotonFinalizarIcono: '//i[text()="call_end"]',
