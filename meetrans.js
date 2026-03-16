@@ -22,6 +22,7 @@ class Meetrans {
   // Estos valores tal vez se deben cambiar si Google cambia la interfaz
   botonActivoColor = 'rgb(138, 180, 248)';
   selectores = {
+    chatIcono: '[data-panel-id="2"]',
     imagenes: (
       '[data-priority][data-side] [tabindex][role=region] img[src^="https://"][data-iml][alt=""]:not([jsname],[jscontroller],[aria-hidden])'
     ),
@@ -31,6 +32,7 @@ class Meetrans {
     listaParticipanteNombre: (
       '[data-panel-container-id=sidePanel1] [data-participant-id] span'
     ),
+    mensajes: '[data-message-id]',
     participantesListaIcono: '[data-panel-id][data-promo-anchor-id] i',
     reunionNombre: '[data-meeting-title]',
     subtituloEstaPrendido: (
@@ -63,7 +65,6 @@ class Meetrans {
   };
   ultimaHora = '';
   ultimaPersonaNombre = '';
-  chatAbierto = false;
   personaMensajeSufijo = ' (Chat)';
 
   constructor({ opciones }) {
@@ -366,31 +367,21 @@ class Meetrans {
   marcarMensajesComoAgregados = () => {
     (
       document
-      .querySelectorAll('[data-message-text]')
+      .querySelectorAll(this.selectores.mensajes)
       .forEach((dMensaje) => {dMensaje.agregado = true})
     );
   }
 
   capturarMensajes = () => {
-    if (document.querySelector('[data-panel-id="2"]').ariaPressed === 'true') {
-      if (!this.chatAbierto) {
-        this.marcarMensajesComoAgregados();
-        this.chatAbierto = true;
-      }
-
-      (
-        document
-        .querySelectorAll('[data-message-text]')
-        .forEach(this.guardarIntervencionMensaje)
-      );
-      return;
+    let dChatIcono = document.querySelector(this.selectores.chatIcono);
+    if (dChatIcono.ariaExpanded) {
+      dChatIcono.click();
+      dChatIcono.click();
     }
-
-    this.chatAbierto = false;
     (
       document
-      .querySelectorAll('[data-key^="notification-"]')
-      .forEach(this.guardarIntervencionNotificacion)
+      .querySelectorAll(this.selectores.mensajes)
+      .forEach(this.guardarIntervencionMensaje)
     );
   }
 
@@ -401,7 +392,15 @@ class Meetrans {
     dMensaje.agregado = true;
     this.ultimaHora = this.obtenerHoraActualConDosPuntos();
     this.ultimaPersonaNombre = (
-      dMensaje.parentElement.parentElement.dataset.senderName +
+      (
+        (
+          dMensaje.parentElement.parentElement.parentElement.firstChild.nodeName
+          ===
+          'IMG'
+        ) ?
+        dMensaje.parentElement.parentElement.innerText.split('\n')[0] :
+        this.nombre
+      ) +
       this.personaMensajeSufijo
     );
     this.guardarIntervencion(dMensaje.innerText);
