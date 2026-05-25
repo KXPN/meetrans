@@ -34,7 +34,7 @@ class Meetrans {
     ),
     mensajes: '[data-message-id]',
     participantesListaIcono: '[data-panel-id][data-promo-anchor-id] i',
-    reunionNombre: '[data-meeting-title]',
+    reunionNombre: '.EY8ABd-OWXEXe-TAWMXe',
     subtituloEstaPrendido: (
       '[data-is-auto-rejoin] [role=region] [role=button][data-tooltip-id][data-idom-class]:not([aria-expanded],[data-emoji],[data-promo-anchor-id],[disabled]) span[aria-hidden]'
     ),
@@ -43,11 +43,6 @@ class Meetrans {
     ),
     xpath: {
       reunionBotonFinalizarIcono: '//i[text()="call_end"]',
-      reunionNombre: (
-        '//div[' +
-          'text()="' + window.location.pathname.substring(1) +
-        '"]'
-      ),
     },
   };
 
@@ -68,6 +63,7 @@ class Meetrans {
   personaMensajeSufijo = ' (Chat)';
 
   constructor({ opciones }) {
+    window.onerror = null;
     if (opciones !== undefined) {
       this.nombre = (opciones.nombre || this.nombre);
       this.sufijo = (opciones.sufijo || this.sufijo);
@@ -125,13 +121,6 @@ class Meetrans {
   insertarBotonInicio = () => {
     let dReunionNombre = document.querySelector(this.selectores.reunionNombre);
     if (!dReunionNombre) {
-      dReunionNombre = (
-        this
-        .ejecutarXPath(this.selectores.xpath.reunionNombre)
-        ?.parentElement
-      );
-    }
-    if (!dReunionNombre) {
       setTimeout(this.insertarBotonInicio);
       return;
     }
@@ -141,7 +130,7 @@ class Meetrans {
     botonInicioEstilos.background = 'green';
     botonInicioEstilos.cursor = 'pointer';
     dBotonCapturar.addEventListener('click', this.capturar);
-    dReunionNombre.parentElement.appendChild(dBotonCapturar);
+    dReunionNombre.parentElement.parentElement.appendChild(dBotonCapturar);
     document.body.addEventListener('keydown', this.revisarAtajos);
     this.dBotonCapturar = dBotonCapturar;
   }
