@@ -239,14 +239,12 @@ class Meetrans {
     );
     dListaParticipantes.forEach(this.agregarParticipante);
     const reunionNombre = (
-      (
-        document
-        .querySelector(this.selectores.reunionNombre)
-        ?.dataset
-        ?.meetingTitle
-      ) ||
-      ''
+      document.querySelector(this.selectores.reunionNombre).innerText
     );
+    const reunionCodigo = this.reunion.codigo;
+    if (reunionCodigo === reunionNombre) {
+      reunionNombre = '';
+    }
     const inicioMensaje = (
       'En ' +
       this.obtenerFechaActualSinPuntuacion() +
@@ -255,7 +253,7 @@ class Meetrans {
       (reunionNombre ? (' "' + reunionNombre + '"') : '') +
       ' ' +
       'con código ' +
-      '"' + this.reunion.codigo + '" ' +
+      '"' + reunionCodigo + '" ' +
       'con ' +
       this.participantesNombres.join(', ')
     );
