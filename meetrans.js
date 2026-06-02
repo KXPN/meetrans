@@ -238,7 +238,7 @@ class Meetrans {
       document.querySelectorAll(this.selectores.listaParticipante)
     );
     dListaParticipantes.forEach(this.agregarParticipante);
-    const reunionNombre = (
+    let reunionNombre = (
       document.querySelector(this.selectores.reunionNombre).innerText
     );
     const reunionCodigo = this.reunion.codigo;
