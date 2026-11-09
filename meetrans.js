@@ -34,7 +34,7 @@ class Meetrans {
     ),
     mensajes: '[data-message-id]',
     participantesListaIcono: '[data-panel-id][data-promo-anchor-id] i',
-    reunionNombre: '.EY8ABd-OWXEXe-TAWMXe',
+    reunionNombre: '.u6vdEc.ouH3xe',
     subtituloEstaPrendido: (
       '[data-is-auto-rejoin] [role=region] [role=button][data-tooltip-id][data-idom-class]:not([aria-expanded],[data-emoji],[data-promo-anchor-id],[disabled]) span[aria-hidden]'
     ),
@@ -130,7 +130,7 @@ class Meetrans {
     botonInicioEstilos.background = 'green';
     botonInicioEstilos.cursor = 'pointer';
     dBotonCapturar.addEventListener('click', this.capturar);
-    dReunionNombre.parentElement.parentElement.appendChild(dBotonCapturar);
+    dReunionNombre.parentElement.appendChild(dBotonCapturar);
     document.body.addEventListener('keydown', this.revisarAtajos);
     this.dBotonCapturar = dBotonCapturar;
   }
