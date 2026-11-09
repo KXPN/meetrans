@@ -35,11 +35,14 @@ class Meetrans {
     mensajes: '[data-message-id]',
     participantesListaIcono: '[data-panel-id][data-promo-anchor-id] i',
     reunionNombre: '.u6vdEc.ouH3xe',
-    subtituloEstaPrendido: (
-      '[data-is-auto-rejoin] [role=region] [role=button][data-tooltip-id][data-idom-class]:not([aria-expanded],[data-emoji],[data-promo-anchor-id],[disabled]) span[aria-hidden]'
+    subtituloActivacionBoton: (
+      '.UywwFc-LgbsSe.UywwFc-LgbsSe-OWXEXe-Bz112c-M1Soyc.UywwFc-LgbsSe-OWXEXe-SfQLQb-suEOdc.UywwFc-LgbsSe-OWXEXe-dgl2Hf.UywwFc-LgbsSe-OWXEXe-zcdHbf.UywwFc-StrnGf-YYd4I-VtOx3e.UywwFc-kSE8rc-StrnGf-pvxB9-WPi0i.fDgRnf.q7vyEf.nQCzZ.UDYwAf.q7vyEf.UZHyEb .UywwFc-vQzf8d'
     ),
-    subtituloEstaPrendidoIcono: (
-      '[data-is-auto-rejoin] [role=region] [role=button][data-tooltip-id][data-idom-class]:not([aria-expanded],[data-emoji],[data-promo-anchor-id],[disabled]) span[aria-hidden] i'
+    subtituloApagadoBoton: (
+      '.T5jfYe .VYBDae-Bz112c-LgbsSe.VYBDae-Bz112c-LgbsSe-OWXEXe-SfQLQb-suEOdc.hk9qKe.aLTxue.jfzJEe.EXoIMe'
+    ),
+    subtituloPrendidoBoton: (
+      '.T5jfYe .VYBDae-Bz112c-LgbsSe.VYBDae-Bz112c-LgbsSe-OWXEXe-SfQLQb-suEOdc.hk9qKe.EXoIMe.HlOR8e.ZAsEvd'
     ),
     xpath: {
       reunionBotonFinalizarIcono: '//i[text()="call_end"]',
@@ -100,7 +103,7 @@ class Meetrans {
 
   inicializar = () => {
     const dSubtitulosBoton = (
-      document.querySelector(this.selectores.subtituloEstaPrendido)
+      document.querySelector(this.selectores.subtituloApagadoBoton)
     );
     if (!dSubtitulosBoton) {
       setTimeout(this.inicializar.bind(this));
@@ -185,29 +188,29 @@ class Meetrans {
     this.cambiarSubtitulosBotonEstado(false);
   }
 
-  cambiarSubtitulosBotonEstado = (debeEstarActivo) => {
-    let dSubtituloEstaPrendido = (
-      document.querySelector(this.selectores.subtituloEstaPrendidoIcono)
+  iniciarSubtitulos = () => {
+    let dSubtituloActivacionBoton = (
+      document.querySelector(this.selectores.subtituloActivacionBoton)
     );
-    let dSubtitulosBoton = dSubtituloEstaPrendido?.parentElement?.parentElement;
-    if (!dSubtitulosBoton) {
-      const dSubtituloEstaPrendidoIcono = (
-        document.querySelector(this.selectores.subtituloEstaPrendido)
-      );
-      dSubtitulosBoton = dSubtituloEstaPrendidoIcono.parentElement;
+    if (!dSubtituloActivacionBoton) {
+      setTimeout(this.iniciarSubtitulos);
+      return;
     }
-    const subtitulosBotonFondoColor = (
-      getComputedStyle(dSubtitulosBoton)
-      .backgroundColor
+    dSubtituloActivacionBoton.click();
+  }
+
+  cambiarSubtitulosBotonEstado = (debeEstarActivo) => {
+    let dSubtituloApagadoBoton = (
+      document.querySelector(this.selectores.subtituloApagadoBoton)
     );
-    const subtitulosBotonEstaActivo = (
-      subtitulosBotonFondoColor ===
-      this.botonActivoColor
+    let dSubtituloPrendidoBoton = (
+      document.querySelector(this.selectores.subtituloPrendidoBoton)
     );
-    if (
-      (!subtitulosBotonEstaActivo && debeEstarActivo) ||
-      (subtitulosBotonEstaActivo && !debeEstarActivo)
-    ) {
+    let subtitulosBotonEstaActivo = !!dSubtituloPrendidoBoton;
+    if (!subtitulosBotonEstaActivo && debeEstarActivo) {
+      dSubtituloApagadoBoton.click();
+      this.iniciarSubtitulos();
+    } else if (subtitulosBotonEstaActivo && !debeEstarActivo) {
       dSubtitulosBoton.click();
     }
   }
